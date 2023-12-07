@@ -20,7 +20,10 @@ app.listen(port, () => {
   console.log("App listening at http://%s:%s", host, port);
 });
 
-app.get("/getAllPosts", async (req, res) => {
+//----------------------------------------------------
+
+//GET
+app.get("/api/get", async (req, res) => {
   await client.connect();
   console.log("Node connected successfully to GET MongoDB");
   const query = {};
@@ -34,19 +37,58 @@ app.get("/getAllPosts", async (req, res) => {
   res.send(results);
 });
 
-app.post("/post", async (req, res) => {
-  //console.log(req);
-  console.log(req.get('obj_postTitle'));
-  var myobj = { id: req.get('obj_id'), postTitle: req.get('obj_postTitle'), author: req.get('obj_author'),
-                date: req.get('obj_date'), date_published: req.get('obj_date_published'), genres:  req.get('obj_genres'),
-                tags: req.get('obj_tags'), postContents: req.get('obj_postContents') };
+//POST
+app.post("/api/post", async (req, res) => {
+  console.log("test");
+  console.log(req);
+  console.log(req.get('obj_title'));
+  var myobj = { id: req.get('obj_id'), title: req.get('obj_title'), price: req.get('obj_price'),
+                description: req.get('obj_description'), category: req.get('obj_category'), image:  req.get('obj_image'),
+                rating: req.get('rating') };
   await client.connect();
   console.log("Node connected successfully to POST MongoDB");
   const query = {};
   const results = await db
-    .collection("blogposts")
+    .collection("fakestore_catalog")
     .insertOne(myobj);
   console.log(results);
   res.status(200);
   res.send(results);
+});
+
+//PUT
+app.put("/api/update", (req, res) => {
+  const id = req.body.id;
+  const title = req.body.title;
+  const price = req.body.price;
+  const description = req.body.description;
+  const category = req.body.category;
+  const image = req.body.image;
+  const rating = req.body.rating;
+  console.log(id, title, price, description, category, image, rating);
+  db.query(
+    "UPDATE fakestore_catalog SET title=?, price=?, description=?, category=?, image=?, rating=? WHERE id=?",
+    [title, price, description, category, image, rating, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        console.log(result);
+        res.status(200).send('Resource Updated');
+      }
+    }
+  );
+});
+
+//DELETE
+app.delete("/api/delete/:id", (req, res) => {
+  const id = req.params.id;
+  db.query("DELETE FROM fakestore_catalog WHERE id= ?", id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
