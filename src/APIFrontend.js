@@ -10,10 +10,12 @@ export function getAllProducts(setProduct) {
 
 export function deleteOneProduct(deleteid,setProduct) {
     console.log("Product to delete :", deleteid);
+    let b = JSON.stringify({ id: deleteid });
+    console.log(b);
     fetch("http://localhost:8081/api/delete", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "id": deleteid }),
+        body: b,
     })
         .then((response) => response.json())
         .then((data) => {
@@ -25,17 +27,23 @@ export function deleteOneProduct(deleteid,setProduct) {
                 alert(key + value);
             }
         });
+    console.log("test");
     //setChecked4(!checked4);
-    getAllProducts(setProduct);
 }
 
 export function postMethod(addNewProduct) {
     console.log(addNewProduct);
     fetch("http://127.0.0.1:8081/api/post", {
     method: "POST",
-    headers: addNewProduct
+    headers: {"Content-Type:": "application/json"},
+    body: addNewProduct
 })
 }
 export function putMethod(Product,allProducts,setProducts){
-
+    console.log(Product);
+    fetch("http://127.0.0.1:8081/api/update",{
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Product)
+    });
 }

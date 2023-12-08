@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
-import { getAllProducts, deleteOneProduct,postMethod,putMethod } from './APIFrontend';
+import { getAllProducts, deleteOneProduct, postMethod, putMethod } from './APIFrontend';
 
 function App() {
   const [pageID, setPageID] = useState(0);
@@ -15,57 +15,57 @@ function App() {
     category: "",
     image: "http://127.0.0.1:4000/images/",
     rating: 0.0,
-    });
+  });
 
   React.useEffect(() => {
     getAllProducts(setProducts);
-    }, []);
+  }, []);
 
   return (
     <div className="App">
-      {navBar(setPageID,setCurProduct,Products,setProducts)}
-      {getPage(pageID, setPageID, Products, setProducts,curPostID,setCurProduct,addNewProduct,setAddNewProduct)}
+      {navBar(setPageID, setCurProduct, Products, setProducts)}
+      {getPage(pageID, setPageID, Products, setProducts, curPostID, setCurProduct, addNewProduct, setAddNewProduct)}
     </div>
   );
 }
 
-function getPage(pageID,setPageID,Products,setProducts,curPostID,setCurProduct,addNewProduct,setAddNewProduct){
-  if(pageID == 0){
-    return renderGet(pageID,Products,setProducts);
+function getPage(pageID, setPageID, Products, setProducts, curPostID, setCurProduct, addNewProduct, setAddNewProduct) {
+  if (pageID == 0) {
+    return renderGet(pageID, Products, setProducts);
   }
-  if(pageID == 1){
-    return renderPostPage(Products,setProducts,addNewProduct,setAddNewProduct);
+  if (pageID == 1) {
+    return renderPostPage(Products, setProducts, addNewProduct, setAddNewProduct);
   }
-  if(pageID == 2){
-    return renderPutPage(Products,curPostID,setProducts);
+  if (pageID == 2) {
+    return renderPutPage(Products, curPostID, setProducts);
   }
 }
 
-function navBar(setPageID,setCurProduct,Products,setProducts) {
+function navBar(setPageID, setCurProduct, Products, setProducts) {
   return (
-    <div style={{marginRight: "75%"}}>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID,0,setCurProduct,Products,setProducts)}>Get Post</button>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID,1,setCurProduct,Products,setProducts)}>Post Post</button>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID,2,setCurProduct,Products,setProducts)}>Put Post</button>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID,3,setCurProduct,Products,setProducts)}>Delete Post</button>
+    <div style={{ marginRight: "75%" }}>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 0, setCurProduct, Products, setProducts)}>Get Post</button>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 1, setCurProduct, Products, setProducts)}>Post Post</button>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 2, setCurProduct, Products, setProducts)}>Put Post</button>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 3, setCurProduct, Products, setProducts)}>Delete Post</button>
       <br></br>
       <label for="idText">Id of Put or Delete</label>
-      <input id="idText" type='number' style={{width: "20%", border:"solid"}}></input>
+      <input id="idText" type='number' style={{ width: "20%", border: "solid" }}></input>
     </div>
   )
 }
-function setIds(setPageID,id,setCurProduct,Products,setProducts) {
+function setIds(setPageID, id, setCurProduct, Products, setProducts) {
   setPageID(id);
-  if(id == 2){
+  if (id == 2) {
     setCurProduct(document.getElementById("idText").value);
   }
-  if(id == 3){
-    deleteOneProduct(document.getElementById("idText").value,setProducts)
+  if (id == 3) {
+    deleteOneProduct(document.getElementById("idText").value, setProducts)
     setPageID(0);
   }
 }
 
-function renderGet(pageID, Products,setProducts) {
+function renderGet(pageID, Products, setProducts) {
   return (
     <div>
       {Products.map((cur_product, index) => (
@@ -104,68 +104,81 @@ function renderSingleProduct(cur_product) {
     </div>
   );
 }
-function editPage(){
+function editPage() {
   return (
     <div>
 
-<form>
-    <div class="grid gap-6 mb-6 md:grid-cols-2">
-        <div>
+      <form>
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+          <div>
             <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-            <input type="text" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Title"required>
-          </input>
-        </div>
-        <div>
+            <input type="text" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Title" required>
+            </input>
+          </div>
+          <div>
             <label for="Price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
             <input type="text" id="Price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Price" required>
-        
+
             </input>
-        </div>
-        <div>
+          </div>
+          <div>
             <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
             <input type="text" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Category" required>
-        
+
             </input>
-        </div>
-        <div>
+          </div>
+          <div>
             <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">image</label>
             <input type="tel" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Image" required>
-        
+
             </input>
-        </div>
-        <div>
+          </div>
+          <div>
             <label for="rating-rate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rating: Rate</label>
             <input type="url" id="rating-rate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rating: Rate" required>
-        
+
             </input>
-        </div>
-        <div>
+          </div>
+          <div>
             <label for="rating-count" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rating: Count</label>
             <input type="number" id="rating-count" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rating: Count" required>
-        
+
             </input>
+          </div>
         </div>
-    </div>
-    <div class="mb-6">
-        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-        <input type="textarea" id="description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Description" required>
-    
-        </input>
+        <div class="mb-6">
+          <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+          <input type="textarea" id="description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Description" required>
+
+          </input>
         </div>
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-</form>
+      </form>
 
     </div>
   )
 }
-function getDataFromInput(addNewProduct,setAddNewProduct){
-  console.log(addNewProduct);
-  postMethod(addNewProduct);
+function getDataFromInput(addNewProduct, setAddNewProduct,highestId) {
+  let x = (
+    {
+      id: highestId,
+      title: document.getElementById("title"),
+      price: document.getElementById("Price"),
+      description: document.getElementById("description"),
+      category: document.getElementById("category"),
+      image: document.getElementById("image"),
+      rating: {
+        rate: document.getElementById("rating-rate"),
+        count: document.getElementById("rating-count")
+      },
+    }
+  );
+  console.log(x);
+  postMethod(x);
 }
-function renderPostPage(Product,setProducts,addNewProduct,setAddNewProduct) {
+function renderPostPage(Product, setProducts, addNewProduct, setAddNewProduct) {
   let highestId = 0;
-  for(let i in Product){
-    if(i.id > highestId){
+  for (let i in Product) {
+    if (i.id > highestId) {
       highestId = i.id;
     }
   }
@@ -173,36 +186,35 @@ function renderPostPage(Product,setProducts,addNewProduct,setAddNewProduct) {
   return (
     <div>
       {editPage([])}
-      <button onClick={() => getDataFromInput(addNewProduct,setAddNewProduct)}>
-        POST
-      </button>
+      <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => getDataFromInput(addNewProduct, setAddNewProduct,highestId)}>Submit</button>
     </div>
   )
 }
-function renderPutPage(Product,id,setProducts) {
+function renderPutPage(Product, id, setProducts) {
   console.log(id == Product[1].id);
-  for(let i = 0; i < Product.length; i++){
+  for (let i = 0; i < Product.length; i++) {
     console.log(Product[i]);
-    if(Product[i].id + "" == id + ""){
+    if (Product[i].id + "" == id + "") {
       console.log("found");
       return (
         <div>
+          {renderSingleProduct(Product[i])}
           <div>
             <label for="price_edit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-            <input type="text" id="price_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Price"required>
-          </input>
-        </div>
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => updatePrice(Product[i],Product,setProducts)}>Submit</button>
+            <input type="text" id="price_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Price" required>
+            </input>
+          </div>
+          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => updatePrice(Product[i], Product, setProducts)}>Submit</button>
         </div>
       )
     }
   }
 }
-function updatePrice(Product,allProducts,setProducts){
+function updatePrice(Product, allProducts, setProducts) {
   Product.price = document.getElementById("price_edit");
-  putMethod(Product,allProducts,setProducts);
+  putMethod(Product, allProducts, setProducts);
 }
-function getData(){
+function getData() {
 
 }
 
