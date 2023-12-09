@@ -60,9 +60,10 @@ function setIds(setPageID, id, setCurProduct, Products, setProducts) {
     setCurProduct(document.getElementById("idText").value);
   }
   if (id == 3) {
-    deleteOneProduct(document.getElementById("idText").value, setProducts)
+    deleteOneProduct(document.getElementById("idText").value)
     setPageID(0);
   }
+  getAllProducts(setProducts);
 }
 
 function renderGet(pageID, Products, setProducts) {
@@ -98,8 +99,8 @@ function renderSingleProduct(cur_product) {
         Product ID: {cur_product.id}
       </p>
       <p>
-        Rating: {cur_product.rating.rate} / 5<br></br>
-        ({cur_product.rating.count} ratings)
+        {/* Rating: {cur_product.rating.rate} / 5<br></br> */}
+        {/* ({cur_product.rating.count} ratings) */}
       </p>
     </div>
   );
@@ -160,20 +161,19 @@ function editPage() {
 function getDataFromInput(addNewProduct, setAddNewProduct,highestId) {
   let x = (
     {
-      id: highestId,
-      title: document.getElementById("title"),
-      price: document.getElementById("Price"),
-      description: document.getElementById("description"),
-      category: document.getElementById("category"),
-      image: document.getElementById("image"),
+      title: document.getElementById("title").value,
+      price: document.getElementById("Price").value,
+      description: document.getElementById("description").value,
+      category: document.getElementById("category").value,
+      image: document.getElementById("image").value,
       rating: {
-        rate: document.getElementById("rating-rate"),
-        count: document.getElementById("rating-count")
+        rate: document.getElementById("rating-rate").value,
+        count: document.getElementById("rating-count").value
       },
     }
   );
   console.log(x);
-  postMethod(x);
+  postMethod(x,highestId);
 }
 function renderPostPage(Product, setProducts, addNewProduct, setAddNewProduct) {
   let highestId = 0;
@@ -204,15 +204,15 @@ function renderPutPage(Product, id, setProducts) {
             <input type="text" id="price_edit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Price" required>
             </input>
           </div>
-          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => updatePrice(Product[i], Product, setProducts)}>Submit</button>
+          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => updatePrice(Product[i], setProducts)}>Submit</button>
         </div>
       )
     }
   }
 }
-function updatePrice(Product, allProducts, setProducts) {
-  Product.price = document.getElementById("price_edit");
-  putMethod(Product, allProducts, setProducts);
+function updatePrice(Product, setProducts) {
+  Product.price = document.getElementById("price_edit").value;
+  putMethod(Product, setProducts);
 }
 function getData() {
 

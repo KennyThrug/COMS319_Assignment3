@@ -32,63 +32,97 @@ app.get("/api/get", async (req, res) => {
     .find(query)
     .limit(100)
     .toArray();
-  console.log(results);
+  // console.log(results);
   res.status(200);
   res.send(results);
 });
 
 //POST
 app.post("/api/post", async (req, res) => {
-  console.log("test");
-  console.log(req);
-  console.log(req.get('obj_title'));
-  var myobj = { id: req.get('obj_id'), title: req.get('obj_title'), price: req.get('obj_price'),
-                description: req.get('obj_description'), category: req.get('obj_category'), image:  req.get('obj_image'),
-                rating: req.get('rating') };
   await client.connect();
-  console.log("Node connected successfully to POST MongoDB");
-  const query = {};
-  const results = await db
-    .collection("fakestore_catalog")
-    .insertOne(myobj);
-  console.log(results);
+  const keys = Object.keys(req.body);
+  const values = Object.values(req.body);
+  console.log(keys);
+  const id = values[0]; // id
+  const title = values[1]; // name
+  const price = values[2]; // price
+  const description = values[3]; // description
+  const category = values[4]; // category
+  const image = values[5]; // Image
+  const rate = values[6]; // Rating
+  const count = values[7];
+  const newDocument = {
+    id:id,
+    title:title,
+    price:price,
+    description:description,
+    category: category,
+    image:image,
+    rating: {
+      rate: rate,
+      count: count
+    }
+  };
+  console.log("--------------------");
+  console.log(newDocument);
+  console.log("--------------------");
+  const results = await db.collection("fakestore_catalog").insertOne(newDocument);
+  res.status(200);
+  res.send(results);
+  });
+  
+
+//PUT
+app.put("/api/update", async (req, res) => {
+  await client.connect();
+  const keys = Object.keys(req.body);
+  const values = Object.values(req.body);
+  console.log(keys);
+  const id = Number(values[0]); // id
+  const title = values[1]; // name
+  const price = values[2]; // price
+  const description = values[3]; // description
+  const category = values[4]; // category
+  const image = values[5]; // Image
+  const rate = values[6]; // Rating
+  const count = values[7];
+  const newDocument = {
+    id:id,
+    title:title,
+    price:price,
+    description:description,
+    category: category,
+    image:image,
+    rating: {
+      rate: rate,
+      count: count
+    }
+  };
+  console.log("--------------------");
+  console.log(newDocument);
+  console.log("--------------------");
+  const results = await db.collection("fakestore_catalog")
+  .replaceOne({id: Number(values[0])},newDocument);
   res.status(200);
   res.send(results);
 });
 
-//PUT
-app.put("/api/update", (req, res) => {
-  const id = req.body.id;
-  const title = req.body.title;
-  const price = req.body.price;
-  const description = req.body.description;
-  const category = req.body.category;
-  const image = req.body.image;
-  const rating = req.body.rating;
-  console.log(id, title, price, description, category, image, rating);
-  db.query(
-    "UPDATE fakestore_catalog SET title=?, price=?, description=?, category=?, image=?, rating=? WHERE id=?",
-    [title, price, description, category, image, rating, id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send('Internal Server Error');
-      } else {
-        console.log(result);
-        res.status(200).send('Resource Updated');
-      }
-    }
-  );
-});
-
-//DELETE
-app.delete("/api/delete/:id", (req, res) => {
-  const id = req.params.id;
-  db.query("DELETE FROM fakestore_catalog WHERE id= ?", id, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
+// DELETE
+app.delete("/api/delete", async (req, res) => {
+  await client.connect();
+  console.log("Delete Started");
+  const values = Object.values(req.body);
+  const id = values[0];
+  const query = {id: Number(id)};
+  console.log(query);
+  const result = await db.collection("fakestore_catalog").deleteOne(query);
+  res.send(result);
+  // res.send(results);
+  // db.query("DELETE FROM fakestore_catalog WHERE id= ?", id, (err, result) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     res.send(result);
+  //   }
+  // });
 });
