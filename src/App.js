@@ -39,6 +39,17 @@ function getPage(pageID, setPageID, Products, setProducts, curPostID, setCurProd
   if (pageID == 2) {
     return renderPutPage(Products, curPostID, setProducts);
   }
+  if (pageID == 4){
+    return (<div>
+      Kenny Epstein kepstein@iastate.edu
+      <br></br>
+      Austin Dart aedart@iastate.edu
+      <br></br>
+      COMS 319 Construction of User Interfaces
+      <br></br>
+      Taught by Prof Abraham Aldaco
+    </div>)
+  }
 }
 
 function navBar(setPageID, setCurProduct, Products, setProducts) {
@@ -48,6 +59,7 @@ function navBar(setPageID, setCurProduct, Products, setProducts) {
       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 1, setCurProduct, Products, setProducts)}>Post Post</button>
       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 2, setCurProduct, Products, setProducts)}>Put Post</button>
       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 3, setCurProduct, Products, setProducts)}>Delete Post</button>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => setIds(setPageID, 4, setCurProduct, Products, setProducts)}>About Page</button>
       <br></br>
       <label for="idText">Id of Put or Delete</label>
       <input id="idText" type='number' style={{ width: "20%", border: "solid" }}></input>
@@ -99,8 +111,8 @@ function renderSingleProduct(cur_product) {
         Product ID: {cur_product.id}
       </p>
       <p>
-        {/* Rating: {cur_product.rating.rate} / 5<br></br> */}
-        {/* ({cur_product.rating.count} ratings) */}
+        Rating: {cur_product.rating.rate} / 5<br></br>
+        ({cur_product.rating.count} ratings)
       </p>
     </div>
   );
@@ -177,9 +189,9 @@ function getDataFromInput(addNewProduct, setAddNewProduct,highestId) {
 }
 function renderPostPage(Product, setProducts, addNewProduct, setAddNewProduct) {
   let highestId = 0;
-  for (let i in Product) {
-    if (i.id > highestId) {
-      highestId = i.id;
+  for (let i = 0; i < Product.length; i++) {
+    if (Product[i].id > highestId) {
+      highestId = Product[i].id;
     }
   }
   highestId++; //set it to next ID
